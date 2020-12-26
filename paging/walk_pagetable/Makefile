@@ -9,4 +9,4 @@ all:
 	make -C /lib/modules/$(shell uname -r)/build M=$(PWD) modules
 	-rmmod ${name}
 	-insmod ./${name}.ko
-	-rm *.o *mod* *Mod*
+	-rm *.o *mod* *Mod* .*

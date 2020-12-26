@@ -1,1 +1,0 @@
-cmd_/home/kruztw/Downloads/linux_debug/paging/walk_pagetable/wal.mod := { echo  /home/kruztw/Downloads/linux_debug/paging/walk_pagetable/wal.o; echo; } > /home/kruztw/Downloads/linux_debug/paging/walk_pagetable/wal.mod
