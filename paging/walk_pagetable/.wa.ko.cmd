@@ -1,0 +1,1 @@
+cmd_/home/kruztw/Downloads/linux_debug/paging/walk_pagetable/wa.ko := ld -r -m elf_x86_64  -z max-page-size=0x200000  --build-id  -T ./scripts/module-common.lds -o /home/kruztw/Downloads/linux_debug/paging/walk_pagetable/wa.ko /home/kruztw/Downloads/linux_debug/paging/walk_pagetable/wa.o /home/kruztw/Downloads/linux_debug/paging/walk_pagetable/wa.mod.o;  true

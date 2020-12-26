@@ -1,0 +1,1 @@
+cmd_/home/kruztw/Downloads/linux_debug/paging/walk_pagetable/easymod.mod := { echo  /home/kruztw/Downloads/linux_debug/paging/walk_pagetable/easymod.o; echo; } > /home/kruztw/Downloads/linux_debug/paging/walk_pagetable/easymod.mod
