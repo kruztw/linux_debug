@@ -46,32 +46,25 @@ static void mapping(u64 pml4, u64 linear)
 	int page_off = linear & 0xfff; // 0 ~ 11
 
         void *lv4  = pml4;
-        void *lv3  = (u64)phys_to_virt(*(u64 *)(lv4 + pgd_off*8)&0x0000ffffffffff00);
-	void *lv2  = (u64)phys_to_virt(*(u64 *)(lv3 + pud_off*8)&0x0000ffffffffff00);
-	void *lv1  = (u64)phys_to_virt(*(u64 *)(lv2 + pmd_off*8)&0x0000ffffffffff00);
+        void *lv3  = (u64)phys_to_virt(*(u64 *)(lv4 + pgd_off*8)&0x0000fffffffff000);
+	void *lv2  = (u64)phys_to_virt(*(u64 *)(lv3 + pud_off*8)&0x0000fffffffff000);
+	void *lv1  = (u64)phys_to_virt(*(u64 *)(lv2 + pmd_off*8)&0x0000fffffffff000);
 	void *lv0  = (u64)phys_to_virt(*(u64 *)(lv1 + pte_off*8)&0x0000fffffffff000);
 	void *addr = (u64)(lv0 + page_off);
-
-	printk("lv4 = %llx\n", __pa(lv4));
-	printk("lv3 = %llx\n", *(u64 *)(lv4+pgd_off*8)&0x0000ffffffffff00);
-	printk("lv2 = %llx\n", *(u64 *)(lv3+pud_off*8)&0x0000ffffffffff00);
-	printk("lv1 = %llx\n", *(u64 *)(lv2+pmd_off*8)&0x0000ffffffffff00);
-	printk("lv0 = %llx\n", *(u64 *)(lv1+pte_off*8)&0x0000fffffffff000);
-	printk("addr= %llx\n", (lv0+page_off));
 
 	printk("pgd_off = %x\n", pgd_off);
 	printk("pud_off = %x\n", pud_off);
 	printk("pmd_off = %x\n", pmd_off);
 	printk("pte_off = %x\n", pte_off);
 	printk("page_off = %x\n", page_off);
-	printk("lv4 = %px\n", lv4);
-	printk("lv3 = %px\n", lv3);
-	printk("lv2 = %px\n", lv2);
-	printk("lv1 = %px\n", lv1);
-	printk("lv0 = %px\n", lv0);
-	printk("addr = %px\n", addr);
         printk("*addr = %llx\n", *(u64 *)addr);
 
+	printk("lv4 = %llx\n", __pa(lv4));
+	printk("lv3 = %llx\n", (u64)(__pa(lv4)+pgd_off*8));
+	printk("lv2 = %llx\n", (u64)(__pa(lv3)+pud_off*8));
+	printk("lv1 = %llx\n", (u64)(__pa(lv2)+pmd_off*8));
+	printk("lv0 = %llx\n", (u64)(__pa(lv1)+pte_off*8));
+	printk("addr= %llx\n", (__pa(lv0)+page_off));
 }
 
 static long ptdump_ioctl(struct file *file, unsigned int cmd, unsigned long param)
@@ -113,9 +106,9 @@ static long ptdump_ioctl(struct file *file, unsigned int cmd, unsigned long para
 }
 
 
-struct file_operations ptdump_ops = {
-	.unlocked_ioctl = ptdump_ioctl,
-	.compat_ioctl   = ptdump_ioctl
+struct proc_ops ptdump_ops = {
+	.proc_ioctl = ptdump_ioctl,
+	.proc_compat_ioctl   = ptdump_ioctl
 };
 
 

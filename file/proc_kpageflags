@@ -1,0 +1,3 @@
+定義每個 page 的狀態, 64bits 一組
+
+參見: /linux/tools/vm/page-types.c 的 page_flag_names

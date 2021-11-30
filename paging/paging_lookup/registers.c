@@ -40,31 +40,31 @@ static int my_show(struct seq_file *fd, void *v) {
     __asm__ __volatile__ ("mov %%cr4, %%rax \n mov %%rax,%0": "=m" (cr4) :: "rax");
     
 
-    len += sprintf( buf+len, "rax=0x%08X    "  , rax);
-    len += sprintf( buf+len, "rbx=0x%08X    "  , rbx);
-    len += sprintf( buf+len, "rcx=0x%08X    "  , rcx);
-    len += sprintf( buf+len, "rdx=0x%08X    ", rdx);
-    len += sprintf( buf+len, "rdi=0x%08X    "  , rdi);
-    len += sprintf( buf+len, "rsi=0x%08X    "  , rsi);
-    len += sprintf( buf+len, "rsp=0x%08X    \n"  , rsp);
-    len += sprintf( buf+len, "r8=0x%08X    "   , r8 );
-    len += sprintf( buf+len, "r9=0x%08X    "   , r9 );
-    len += sprintf( buf+len, "r10=0x%08X    "  , r10);
-    len += sprintf( buf+len, "r11=0x%08X    "  , r11);
-    len += sprintf( buf+len, "r12=0x%08X    "  , r12);
-    len += sprintf( buf+len, "r13=0x%08X    "  , r13);
-    len += sprintf( buf+len, "r14=0x%08X    "  , r14);
-    len += sprintf( buf+len, "r15=0x%08X    \n", r15);
-    len += sprintf( buf+len, "cs=0x%08X    "   , cs );
-    len += sprintf( buf+len, "ss=0x%08X    "   , ss );
-    len += sprintf( buf+len, "ds=0x%08X    "   , ds );
-    len += sprintf( buf+len, "es=0x%08X    "   , es );
-    len += sprintf( buf+len, "fs=0x%08X    "   , fs );
-    len += sprintf( buf+len, "gs=0x%08X    \n" , gs );
-    len += sprintf( buf+len, "cr0=0x%08X    "  , cr0);
-    len += sprintf( buf+len, "cr2=0x%08X    "  , cr2);
-    len += sprintf( buf+len, "cr3=0x%08X    "  , cr3);
-    len += sprintf( buf+len, "cr4=0x%08X    "  , cr4);
+    len += sprintf( buf+len, "rax=0x%llx    "  , rax);
+    len += sprintf( buf+len, "rbx=0x%llx    "  , rbx);
+    len += sprintf( buf+len, "rcx=0x%llx    "  , rcx);
+    len += sprintf( buf+len, "rdx=0x%llx    ", rdx);
+    len += sprintf( buf+len, "rdi=0x%llx    "  , rdi);
+    len += sprintf( buf+len, "rsi=0x%llx    "  , rsi);
+    len += sprintf( buf+len, "rsp=0x%llx    \n"  , rsp);
+    len += sprintf( buf+len, "r8=0x%llx    "   , r8 );
+    len += sprintf( buf+len, "r9=0x%llx    "   , r9 );
+    len += sprintf( buf+len, "r10=0x%llx    "  , r10);
+    len += sprintf( buf+len, "r11=0x%llx    "  , r11);
+    len += sprintf( buf+len, "r12=0x%llx    "  , r12);
+    len += sprintf( buf+len, "r13=0x%llx    "  , r13);
+    len += sprintf( buf+len, "r14=0x%llx    "  , r14);
+    len += sprintf( buf+len, "r15=0x%llx    \n", r15);
+    len += sprintf( buf+len, "cs=0x%llx    "   , cs );
+    len += sprintf( buf+len, "ss=0x%llx    "   , ss );
+    len += sprintf( buf+len, "ds=0x%llx    "   , ds );
+    len += sprintf( buf+len, "es=0x%llx    "   , es );
+    len += sprintf( buf+len, "fs=0x%llx    "   , fs );
+    len += sprintf( buf+len, "gs=0x%llx    \n" , gs );
+    len += sprintf( buf+len, "cr0=0x%llx    "  , cr0);
+    len += sprintf( buf+len, "cr2=0x%llx    "  , cr2);
+    len += sprintf( buf+len, "cr3=0x%llx    "  , cr3);
+    len += sprintf( buf+len, "cr4=0x%llx    "  , cr4);
     buf[len] = '\n';
 
     seq_printf(fd, buf);
@@ -75,11 +75,10 @@ static int my_open(struct inode *inode, struct  file *file) {
   return single_open(file, my_show, NULL);
 }
 
-static const struct file_operations my_fops = {
-  .owner = THIS_MODULE,
-  .open = my_open,
-  .read = seq_read,
-  .release = single_release,
+static const struct proc_ops my_fops = {
+  .proc_open = my_open,
+  .proc_read = seq_read,
+  .proc_release = single_release,
 };
 
 static int __init my_init(void) {
